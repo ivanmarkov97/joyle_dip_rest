@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_app',
+    'auth_app',
     'chat_app',
     'rest_framework',
 ]
@@ -94,17 +95,6 @@ REST_FRAMEWORK = {
         #'rest_framework.authentication.BasicAuthentication',
     ),
 }
-
-
-JWT_AUTH = {
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
-    #'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
-    #'JWT_AUDIENCE': None,
-    #'JWT_ISSUER': None,
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

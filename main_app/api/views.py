@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from main_app.models import Project, Task
 from .serializers import UserSerializer, ProjectSerializer, TaskSerializer
+from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,17 +15,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-"""
-class ProjectViewSet(viewsets.ModelViewSet):
-	queryset = Project.objects.all()
-	serializer_class = ProjectSerializer
-
-class TaskViewSet(viewsets.ModelViewSet):
-	queryset = Task.objects.all()
-	serializer_class = TaskSerializer
-"""
-
 class MainDetail(APIView):
+
+	permission_classes = (IsAuthenticated,)
 
 	model_type = object
 	model_serializer = object 
