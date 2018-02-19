@@ -1,7 +1,14 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from main_app.models import Project, Task
-from .serializers import ProjectSerializer, TaskSerializer, UserSerializer
+from main_app.models import (Project,
+							 Task,
+							 ProjectGroup,
+							 Relation)
+from .serializers import (ProjectSerializer, 
+						  TaskSerializer,
+						  UserSerializer,
+						  ProjectGroupSerializer,
+						  RelationSerializer)
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from rest_framework.views import APIView
@@ -18,7 +25,6 @@ class UserViewSet(viewsets.ModelViewSet):
 class MainDetail(APIView):
 
 	permission_classes = (IsAuthenticated,)
-
 	model_type = object
 	model_serializer = object 
 
@@ -41,6 +47,7 @@ class MainDetail(APIView):
 		serializer = self.model_serializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
+			print(request.user)
 			return Response(serializer.data)
 		return Response(serializer.errors)
 
@@ -58,6 +65,34 @@ class MainDetail(APIView):
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ProjectDetail(MainDetail):
+	model_type = Project
+	model_serializer = ProjectSerializer
+
+class ProjectGroupDetail(MainDetail):
+	model_type = ProjectGroup
+	model_serializer = ProjectGroupSerializer
+
+	def post(self, request, pk, format=None):
+		data = request.data
+		cr_id = int(data['owner'])
+		prj_id = int(data['project'])
+		prj = Project.objects.get(pk=prj_id)
+		if cr_id == prj.owner.id:
+			data_ok = {}
+			data_ok['name'] = data['name']
+			data_ok['project'] = data['project']
+			serializer = self.model_serializer(data=data)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data)
+			return Response(serializer.errors)
+		return Response({"detail": "You can't create group for this project. You're not owner"})
+
+class RelationDetail(MainDetail):
+	model_type = Relation
+	model_serializer = RelationSerializer
+
 class TaskDetail(MainDetail):
 	model_type = Task
 	model_serializer = TaskSerializer
@@ -68,6 +103,3 @@ class TaskDetail(MainDetail):
 		task.save()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ProjectDetail(MainDetail):
-	model_type = Project
-	model_serializer = ProjectSerializer

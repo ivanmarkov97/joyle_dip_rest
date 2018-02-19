@@ -18,6 +18,19 @@ class Project(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class ProjectGroup(models.Model):
+	name = models.CharField(max_length=80)
+	project = models.ForeignKey('Project', unique=True, on_delete=models.CASCADE)
+
+	def __unicode__(self):
+		return self.name
+
+class Relation(models.Model):
+	person = models.ForeignKey(User, on_delete=models.CASCADE)
+	project_group = models.ForeignKey('ProjectGroup', on_delete=models.CASCADE)
+
+	def __unicode__(self):
+		return person	
 
 class Task(models.Model):
 	name = models.CharField(max_length=80)

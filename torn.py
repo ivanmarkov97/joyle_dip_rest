@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 from tornado.options import options, define, parse_command_line
 import tornado.httpserver
 import tornado.ioloop
@@ -18,6 +19,7 @@ class MainHandler(tornado.web.RequestHandler):
 			print("Error: %s" % response.error)
 		else:
 			print(response.body)
+		self.finish()
 
 	@tornado.web.asynchronous
 	def get(self):
@@ -28,8 +30,9 @@ class MainHandler(tornado.web.RequestHandler):
 		headers['Content-Type'] = 'application/json'
 		http_client.fetch("http://127.0.0.1:8080/auth/token", self.handle_response, method='POST', headers=headers, body=body)
 
-class WSHandler(websocket.WebSocketHandler):
 
+class WSHandler(websocket.WebSocketHandler):
+	
 	clients = []
 
 	#prevent from Http-403 Forbidden
@@ -42,8 +45,10 @@ class WSHandler(websocket.WebSocketHandler):
 
 	def on_message(self, message):
 		print(message)
+		msg = json.loads(message)
+		print (msg)
 		for client in self.clients:
-			client.write_message(message)
+			client.write_message("From " + msg['name'] + ": " + msg['text'])
 
 	def on_close(self):
 		print("WS closed")

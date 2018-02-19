@@ -2,7 +2,14 @@ var websocket = new WebSocket("ws://127.0.0.1:8888/websocket");
 
 document.forms.publish.onsubmit = function() {
   var outgoingMessage = this.message.value;
-  websocket.send(outgoingMessage);
+  msg = {
+  	id: 123231412,
+  	type: "message",
+    text: this.message.value,
+    name: this.person.value,
+    date: Date.now()
+  };
+  websocket.send(JSON.stringify(msg));
   return false;
 };
 
@@ -28,4 +35,3 @@ function showMessage(message) {
   messageElem.appendChild(document.createTextNode(message));
   document.getElementById('subscribe').appendChild(messageElem);
 }
-

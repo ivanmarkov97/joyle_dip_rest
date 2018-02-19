@@ -3,32 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<title>WebSocket test</title>
-		<!--/*var socket = new WebSocket("ws://127.0.0.1:8888/websocket");
-		socket.onopen = function() {
-  			alert("Соединение установлено.");
-		};
-
-		socket.onclose = function(event) {
-  			if (event.wasClean) {
-    			alert('Соединение закрыто чисто');
-  			} else {
-    			alert('Обрыв соединения'); // например, "убит" процесс сервера
-  			}
-  			alert('Код: ' + event.code + ' причина: ' + event.reason);
-		};
-
-		socket.onmessage = function(event) {
-  			alert("Получены данные " + event.data);
-		};
-
-		socket.onerror = function(error) {
-  			alert("Ошибка " + error.message);
-		};*/-->
 </head>
 <body>
 	<p>pharagrap</p>
 	<form name="publish">
+		<div>Name</div>
+		<input type="text" name="person">
+		<div>Message</div>
   		<input type="text" name="message">
+  		<br>
   		<input type="submit" value="Отправить">
 	</form>
 	<div id="subscribe"></div>
