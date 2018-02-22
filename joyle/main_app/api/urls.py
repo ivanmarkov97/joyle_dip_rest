@@ -7,8 +7,10 @@ from django.utils.decorators import method_decorator
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-#router.register(r'projects', views.ProjectViewSet)
-#router.register(r'tasks', views.TaskViewSet)
+router.register(r'projects', views.ProjectViewSet)
+router.register(r'tasks', views.TaskViewSet)
+router.register(r'project_groups', views.ProjectGroupViewSet)
+router.register(r'relations', views.RelationViewSet)
 
 urlpatterns = [
 	url(r'^tasks/(?P<pk>[0-9]*)$', views.TaskDetail.as_view()),

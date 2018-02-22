@@ -1,12 +1,12 @@
 import sys
 import os
 import json
-from tornado.options import options, define, parse_command_line
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.wsgi
 from tornado import websocket
+from tornado.options import options, define, parse_command_line
 from django.core.wsgi import get_wsgi_application
 from tornado.httpclient import AsyncHTTPClient
 
@@ -16,9 +16,11 @@ class MainHandler(tornado.web.RequestHandler):
 
 	def handle_response(self, response):
 		if response.error:
-			print("Error: %s" % response.error)
+			#print("Error: %s" % response.error)
+			self.write(response.error)
 		else:
-			print(response.body)
+			#print(response.body)
+			self.write(response.body)
 		self.finish()
 
 	@tornado.web.asynchronous
@@ -28,7 +30,7 @@ class MainHandler(tornado.web.RequestHandler):
 		body = tornado.escape.json_encode(post_data)
 		headers = {}
 		headers['Content-Type'] = 'application/json'
-		http_client.fetch("http://127.0.0.1:8080/auth/token", self.handle_response, method='POST', headers=headers, body=body)
+		http_client.fetch("http://127.0.0.1:8888/auth/token", self.handle_response, method='POST', headers=headers, body=body)
 
 
 class WSHandler(websocket.WebSocketHandler):

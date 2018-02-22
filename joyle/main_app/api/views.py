@@ -22,8 +22,23 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class MainDetail(APIView):
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
+class ProjectGroupViewSet(viewsets.ModelViewSet):
+    queryset = ProjectGroup.objects.all()
+    serializer_class = ProjectSerializer
+
+class RelationViewSet(viewsets.ModelViewSet):
+    queryset = Relation.objects.all()
+    serializer_class = RelationSerializer
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+class MainDetail(APIView):
 	permission_classes = (IsAuthenticated,)
 	model_type = object
 	model_serializer = object 
