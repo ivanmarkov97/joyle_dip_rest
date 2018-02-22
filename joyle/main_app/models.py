@@ -20,6 +20,7 @@ class Project(models.Model):
 
 class ProjectGroup(models.Model):
 	name = models.CharField(max_length=80)
+	created_at = models.DateField()
 	project = models.ForeignKey('Project', unique=True, on_delete=models.CASCADE)
 
 	def __unicode__(self):
@@ -27,10 +28,11 @@ class ProjectGroup(models.Model):
 
 class Relation(models.Model):
 	person = models.ForeignKey(User, on_delete=models.CASCADE)
+	created_at = models.DateField()
 	project_group = models.ForeignKey('ProjectGroup', on_delete=models.CASCADE)
 
 	def __unicode__(self):
-		return person	
+		return unicode(self.person)	
 
 class Task(models.Model):
 	name = models.CharField(max_length=80)

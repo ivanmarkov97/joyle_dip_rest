@@ -15,12 +15,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectGroupSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ProjectGroup
-		fields = ('id', 'name', 'project')
+		fields = ('id', 'name', 'created_at', 'project')
 
 class RelationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Relation
-		fields = ('id', 'person', 'project_group')
+		fields = ('id', 'sender', 'created_at', 'project_group')
 
 class TaskSerializer(serializers.ModelSerializer):
 	class Meta:

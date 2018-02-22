@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+import datetime
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -37,9 +38,19 @@ class WSHandler(websocket.WebSocketHandler):
 	
 	clients = []
 
+	def handle_load_mes(self, response):
+		print(response.body)
+
 	#prevent from Http-403 Forbidden
 	def check_origin(self, origin):
 		return True
+
+	def check_message(self, msg):
+		print(msg)
+		if msg[0] > 0  and msg[4] > 0:
+			return True
+		else: 
+			return False
 
 	def open(self):
 		print("WS opened")
@@ -48,9 +59,16 @@ class WSHandler(websocket.WebSocketHandler):
 	def on_message(self, message):
 		print(message)
 		msg = json.loads(message)
-		print (msg)
-		for client in self.clients:
-			client.write_message("From " + msg['name'] + ": " + msg['text'])
+		if self.check_message(message):
+			for client in self.clients:
+				client.write_message("From " + msg['name'] + ": " + msg['text'])
+			http_client = AsyncHTTPClient()
+			headers = {}
+			headers['Content-Type'] = 'application/json'
+			headers['Authorization'] = 'Token bc56644d9960b75a18ea85dc3ef2ad3379e21a52'
+			http_client.fetch("http://127.0.0.1:8888/api/v1.0/chat/messages/", self.handle_load_mes, method='POST', headers=headers, body=message)
+		else:
+			self.write("incorrect message format")
 
 	def on_close(self):
 		print("WS closed")

@@ -3,11 +3,11 @@ var websocket = new WebSocket("ws://127.0.0.1:8888/websocket");
 document.forms.publish.onsubmit = function() {
   var outgoingMessage = this.message.value;
   msg = {
-  	id: 123231412,
-  	type: "message",
+  	sender: 1,
     text: this.message.value,
     name: this.person.value,
-    date: Date.now()
+    date: "2018-02-22 12:45:53",
+    project_group: 1
   };
   websocket.send(JSON.stringify(msg));
   return false;
