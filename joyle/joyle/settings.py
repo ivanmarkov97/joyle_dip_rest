@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'main_app',
     'auth_app',
     'chat_app',
+    'delegate_app',
     'rest_framework',
     'rest_framework.authtoken',
 ]

@@ -7,6 +7,7 @@ document.forms.publish.onsubmit = function() {
     text: this.message.value,
     name: this.person.value,
     date: "2018-02-22 12:45:53",
+    token: "bc56644d9960b75a18ea85dc3ef2ad3379e21a52",
     project_group: 1
   };
   websocket.send(JSON.stringify(msg));

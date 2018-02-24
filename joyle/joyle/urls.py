@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^auth/', include('auth_app.urls')),
     url(r'^api/v1.0/', include('main_app.api.urls')),
     url(r'^api/v1.0/chat/', include('chat_app.api.urls')),
+    url(r'^api/v1.0/delegate/', include('delegate_app.api.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

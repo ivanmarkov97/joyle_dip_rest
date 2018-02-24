@@ -65,8 +65,12 @@ class WSHandler(websocket.WebSocketHandler):
 			http_client = AsyncHTTPClient()
 			headers = {}
 			headers['Content-Type'] = 'application/json'
-			headers['Authorization'] = 'Token bc56644d9960b75a18ea85dc3ef2ad3379e21a52'
-			http_client.fetch("http://127.0.0.1:8888/api/v1.0/chat/messages/", self.handle_load_mes, method='POST', headers=headers, body=message)
+			headers['Authorization'] = 'Token ' + message['token']
+			http_client.fetch("http://127.0.0.1:8888/api/v1.0/chat/messages/", 
+							  self.handle_load_mes,
+							  method='POST', 
+							  headers=headers, 
+							  body=message[['sender', 'text', 'name', 'date', 'prject_group']])
 		else:
 			self.write("incorrect message format")
 

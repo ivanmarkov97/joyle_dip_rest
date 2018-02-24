@@ -18,13 +18,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Message',
+            name='Delegation',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.TextField()),
                 ('date', models.DateTimeField()),
-                ('project_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main_app.ProjectGroup')),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('recipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipient', to=settings.AUTH_USER_MODEL)),
+                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sender', to=settings.AUTH_USER_MODEL)),
+                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main_app.Task')),
             ],
         ),
     ]
