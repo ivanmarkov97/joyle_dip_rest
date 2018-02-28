@@ -10,19 +10,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Project
-		fields = ('id', 'name', 'description', 'created_at', 'owner')
+		#fields = ('id', 'name', 'description', 'created_at', 'owner')
+		fields = ('__all__')
 
 class ProjectGroupSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ProjectGroup
-		fields = ('id', 'name', 'created_at', 'project')
+		fields = ('__all__')
 
 class RelationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Relation
-		fields = ('id', 'sender', 'created_at', 'project_group')
+		fields = ('__all__')
 
 class TaskSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Task
-		fields = ('id', 'name', 'description', 'created_at', 'deadline', 'priority', 'is_deleted', 'parent', 'project')
+		#fields = ('id', 'name', 'description', 'created_at', 'deadline', 'priority', 'is_deleted', 'parent', 'project')
+		fields = ('__all__')

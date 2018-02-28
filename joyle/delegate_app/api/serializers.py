@@ -5,4 +5,6 @@ from rest_framework import serializers
 class DelegateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Delegation
-		fields = ('id', 'sender', 'recipient', 'date', 'task')
+		fields = ('id', 'sender', 'owner', 'date', 'task', 'status')	
+
+	

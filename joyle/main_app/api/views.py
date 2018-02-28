@@ -50,6 +50,12 @@ class MainDetail(APIView):
 			raise Http404
 
 	def get(self, request, pk, format=None):
+		if request.GET.get('user'):
+			usr_id = int(request.GET.get('user'))
+			usr = User.objects.get(pk=usr_id)
+			samples = self.model_type.objects.all().filter(owner=usr)
+			serializer = self.model_serializer(samples, many=True)
+			return Response(serializer.data)
 		if pk:
 			sample = self.get_object(pk)
 			serializer = self.model_serializer(sample)
@@ -111,10 +117,3 @@ class RelationDetail(MainDetail):
 class TaskDetail(MainDetail):
 	model_type = Task
 	model_serializer = TaskSerializer
-
-	def delete(self, request, pk, format=None):
-		task = self.get_object(pk)
-		task.is_deleted = True
-		task.save()
-		return Response(status=status.HTTP_204_NO_CONTENT)
-

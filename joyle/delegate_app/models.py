@@ -9,9 +9,10 @@ from main_app.models import Task
 
 class Delegation(models.Model):
 	sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-	recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
+	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
 	date = models.DateTimeField()
 	task = models.ForeignKey('main_app.Task', on_delete=models.CASCADE)
+	status = models.NullBooleanField(blank=True)
 
 	def __unicode__(self):
-		return unicode(self.sender) + u" " + unicode(self.recipient)
+		return unicode(self.sender) + u" " + unicode(self.owner)
