@@ -14,7 +14,8 @@ from tornado.httpclient import AsyncHTTPClient
 define('port', type=int, default=8888)
 
 class MainHandler(tornado.web.RequestHandler):
-
+	pass
+	"""
 	def handle_response(self, response):
 		if response.error:
 			#print("Error: %s" % response.error)
@@ -32,7 +33,7 @@ class MainHandler(tornado.web.RequestHandler):
 		headers = {}
 		headers['Content-Type'] = 'application/json'
 		http_client.fetch("http://127.0.0.1:8888/auth/token", self.handle_response, method='POST', headers=headers, body=body)
-
+	"""
 
 class WSHandler(websocket.WebSocketHandler):
 	

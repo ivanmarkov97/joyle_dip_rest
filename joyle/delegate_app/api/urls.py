@@ -8,5 +8,5 @@ router.register(r'', views.DelegateViewSet)
 
 urlpatterns = [
 	url(r'^(?P<pk>[0-9]*)$', views.DelegateDetail.as_view()),
-	url(r'^list$', include(router.urls)),
+	url(r'^list', include(router.urls)),
 ]

@@ -6,5 +6,3 @@ class DelegateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Delegation
 		fields = ('id', 'sender', 'owner', 'date', 'task', 'status')	
-
-	

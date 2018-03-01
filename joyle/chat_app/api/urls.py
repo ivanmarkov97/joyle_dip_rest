@@ -7,5 +7,5 @@ router.register(r'', views.MessageViewSet)
 
 urlpatterns = [
 	url(r'^messages/(?P<pk>[0-9]*)$', views.MessageDetail.as_view()),
-	url(r'^list$', include(router.urls)),
+	url(r'^list', include(router.urls)),
 ]

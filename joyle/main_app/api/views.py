@@ -14,6 +14,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.cache import cache
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -41,8 +42,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 class MainDetail(APIView):
 	permission_classes = (IsAuthenticated,)
 	model_type = object
-	model_serializer = object 
-
+	model_serializer = object
+	cache_model_name = ""
+ 
 	def get_object(self, pk):
 		try:
 			return self.model_type.objects.get(pk=pk)
@@ -52,10 +54,21 @@ class MainDetail(APIView):
 	def get(self, request, pk, format=None):
 		if request.GET.get('user'):
 			usr_id = int(request.GET.get('user'))
-			usr = User.objects.get(pk=usr_id)
-			samples = self.model_type.objects.all().filter(owner=usr)
-			serializer = self.model_serializer(samples, many=True)
-			return Response(serializer.data)
+			if self.cache_model_name != "":
+				if cache.has_key(self.cache_model_name + '_user_' + str(usr_id)):
+					print("return cache")
+					return Response(cache.get(self.cache_model_name + '_user_' + str(usr_id)))
+				else:
+					usr = User.objects.get(pk=usr_id)
+					samples = self.model_type.objects.all().filter(owner=usr)
+					serializer = self.model_serializer(samples, many=True)
+					cache.set(self.cache_model_name + '_user_' + str(usr_id), serializer.data, 60)
+					return Response(serializer.data)
+			else:
+				usr = User.objects.get(pk=usr_id)
+				samples = self.model_type.objects.all().filter(owner=usr)
+				serializer = self.model_serializer(samples, many=True)
+				return Response(serializer.data)
 		if pk:
 			sample = self.get_object(pk)
 			serializer = self.model_serializer(sample)
@@ -69,6 +82,7 @@ class MainDetail(APIView):
 		if serializer.is_valid():
 			serializer.save()
 			print(request.user)
+			cache.delete(self.cache_model_name + '_user_' + str(request.data['owner']))
 			return Response(serializer.data)
 		return Response(serializer.errors)
 
@@ -77,23 +91,26 @@ class MainDetail(APIView):
 		serializer = self.model_serializer(sample, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
+			cache.delete(self.cache_model_name + '_user_' + str(request.data['owner']))
 			return Response(serializer.data)
 		return Response(serializer.errors)
 
 	def delete(self, request, pk, format=None):
 		sample = self.get_object(pk)
 		sample.delete()
+		cache.delete(self.cache_model_name + '_user_' + str(request.data['owner']))
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ProjectDetail(MainDetail):
 	model_type = Project
 	model_serializer = ProjectSerializer
+	cache_model_name = "projects"
 
 class ProjectGroupDetail(MainDetail):
 	model_type = ProjectGroup
 	model_serializer = ProjectGroupSerializer
-
+	
 	def post(self, request, pk, format=None):
 		data = request.data
 		cr_id = int(data['owner'])
@@ -113,7 +130,9 @@ class ProjectGroupDetail(MainDetail):
 class RelationDetail(MainDetail):
 	model_type = Relation
 	model_serializer = RelationSerializer
+	cache_model_name = "relations"
 
 class TaskDetail(MainDetail):
 	model_type = Task
 	model_serializer = TaskSerializer
+	cache_model_name = "tasks"
