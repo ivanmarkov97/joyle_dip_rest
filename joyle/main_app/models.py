@@ -28,9 +28,11 @@ class ProjectGroup(models.Model):
 		return self.name
 
 class Relation(models.Model):
-	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relation_sender')
+	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relation_owner')
 	created_at = models.DateTimeField()
 	project_group = models.ForeignKey('ProjectGroup', on_delete=models.CASCADE)
+	status = models.NullBooleanField(blank=True)
 
 	def __unicode__(self):
 		return unicode(self.person)	
@@ -42,9 +44,9 @@ class Task(models.Model):
 	deadline  = models.DateTimeField()
 	priority = models.PositiveIntegerField(default=0)
 	position = models.PositiveIntegerField(default=0)
-	parent = models.ForeignKey('self', blank=True, null=True, related_name='children')
+	parent = models.ForeignKey('self', blank=True, null=True, related_name='task_children')
 	project = models.ForeignKey('Project', on_delete=models.CASCADE)
-	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
+	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task_owner')
 
 	def __str__(self):
 		return str(self.name)

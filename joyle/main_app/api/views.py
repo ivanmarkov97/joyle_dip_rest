@@ -125,7 +125,7 @@ class ProjectGroupDetail(MainDetail):
 				serializer.save()
 				return Response(serializer.data)
 			return Response(serializer.errors)
-		return Response({"detail": "You can't create group for this project. You're not owner"})
+		return Response({"detailpy": "You can't create group for this project. You're not owner"})
 
 class RelationDetail(MainDetail):
 	model_type = Relation
@@ -136,3 +136,11 @@ class TaskDetail(MainDetail):
 	model_type = Task
 	model_serializer = TaskSerializer
 	cache_model_name = "tasks"
+
+	def put(self, request, pk, format=None):
+		serializer = self.model_serializer(data=request.data, many=True)
+		if serializer.is_valid():
+			print serializer.data
+			serializer.save()
+			return Response(serializer.data)
+		return Response(serializer.errors)
