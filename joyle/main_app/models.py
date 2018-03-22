@@ -8,8 +8,9 @@ from django.contrib.auth.models import User
 class Project(models.Model):
 	#proj_id = models.CharField(max_length=100, primary_key=True, default=uuid.uuid4)
 	name = models.CharField(max_length=80)
-	description = models.CharField(max_length=80)
+	description = models.CharField(max_length=80, blank=True)
 	created_at = models.DateTimeField()
+	position = models.PositiveIntegerField(default=0)
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -47,6 +48,7 @@ class Task(models.Model):
 	parent = models.ForeignKey('self', blank=True, null=True, related_name='task_children')
 	project = models.ForeignKey('Project', on_delete=models.CASCADE)
 	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task_owner')
+	#is_completed = 
 
 	def __str__(self):
 		return str(self.name)

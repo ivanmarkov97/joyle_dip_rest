@@ -13,6 +13,7 @@ router.register(r'project_groups', views.ProjectGroupViewSet)
 router.register(r'relations', views.RelationViewSet)
 
 urlpatterns = [
+	url(r'^get_all/(?P<pk>[0-9]*)$', views.AllDetail.as_view()),
 	url(r'^tasks/(?P<pk>[0-9]*)$', views.TaskDetail.as_view()),
 	url(r'^projects/(?P<pk>[0-9]*)$', views.ProjectDetail.as_view()),
 	url(r'^project_groups/(?P<pk>[0-9]*)$', views.ProjectGroupDetail.as_view()),
